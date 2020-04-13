@@ -10,6 +10,8 @@ Vue.prototype.$http=http
 import router from './router'
 //注册vuex
 import store from './store'
+//引入icon样式
+import "./common/stylus/style.styl"
 
 Vue.config.productionTip = false
 
