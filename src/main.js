@@ -14,7 +14,7 @@ import store from './store'
 import "./common/stylus/style.styl"
 import "./common/stylus/minxin.styl"
 
-
+Vue.prototype.$bus=new Vue()
 Vue.config.productionTip = false
 
 new Vue({

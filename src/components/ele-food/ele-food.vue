@@ -18,12 +18,17 @@
         <span class="oldPrice" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
       </div>
     </div>
+    <ele-control :food="food" class="control"></ele-control>
   </div>
 </template>
 
 <script>
+import control from '../ele-contorl/ele-contorl.vue'
 export default {
   name:"ele-food",
+  components:{
+    "ele-control":control
+  },
   props:{
     food:Object
   }
@@ -68,4 +73,8 @@ export default {
       .oldPrice
         text-decoration line-through
         font-weight 700
+  .control
+    position absolute
+    right 15px
+    bottom 15px
 </style>

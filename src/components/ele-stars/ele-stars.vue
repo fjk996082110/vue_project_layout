@@ -21,7 +21,6 @@ export default {
       if(this.scrore>5)
         return ["on","on","on","on","on"]
       let allStar = Math.floor(this.scrore/0.5)
-      console.log(allStar)
       let allNum = allStar/2
       for(let i=1;i<allNum;i++){
         arr.push("on")
@@ -31,7 +30,6 @@ export default {
         arr.push("half")
       while(arr.length<5)
         arr.push("off")
-      console.log(this.scrore,arr)
       return arr
     }
   },

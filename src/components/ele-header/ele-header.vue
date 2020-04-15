@@ -32,29 +32,31 @@
     <div class="bg">
       <img :src="seller.bgImg" class="avatar">
     </div>
-    <div class="mask" v-if="showMask">
-      <div class="mainWrap">
-        <div class="main">
-          <span class="title">{{seller.name}}</span>
-          <div class="starsWrap">
-            <ele-stars size="48" :scrore="seller.score"></ele-stars>
+    <transition name="mask">
+      <div class="mask" v-if="showMask">
+        <div class="mainWrap">
+          <div class="main">
+            <span class="title">{{seller.name}}</span>
+            <div class="starsWrap">
+              <ele-stars size="48" :scrore="seller.score"></ele-stars>
+            </div>
+            <ele-line class="line">
+              <span class="text">优惠信息</span>
+            </ele-line>
+            <ele-list class="list" :supports="seller.supports"></ele-list>
+            <ele-line class="line">
+              <span class="text">商家公告</span>
+            </ele-line>
+            <p class="bulletin">
+                {{seller.bulletin}}
+            </p>
           </div>
-          <ele-line class="line">
-            <span class="text">优惠信息</span>
-          </ele-line>
-          <ele-list class="list" :supports="seller.supports"></ele-list>
-          <ele-line class="line">
-            <span class="text">商家公告</span>
-          </ele-line>
-          <p class="bulletin">
-              {{seller.bulletin}}
-          </p>
         </div>
-      </div>
-      <div class="footer" @click="showMask=false">
-        <i class="layout-close"></i>
-      </div>
+        <div class="footer" @click="showMask=false">
+          <i class="layout-close"></i>
+        </div>
     </div>
+    </transition>
   </div>
 </template>
 
@@ -86,6 +88,7 @@ export default {
 <style lang="stylus" scoped>
 @import "../../common/stylus/minxin.styl"
 @import "../../common/stylus/extend.styl"
+@import "../../common/stylus/transition.styl"
 .header
   background rgba(7,17,27,.5)
   & > .headerTop
