@@ -1,6 +1,6 @@
 <template>
   <div class="stars" :class="`stars-${size}`">
-    <div class="star" :class="item" v-for="(item,index) in scroreArr" :key="index"></div>
+    <div class="star" :style="{marginRight:`${mr}px`}" :class="item" v-for="(item,index) in scroreArr" :key="index"></div>
   </div>
 </template>
 
@@ -9,7 +9,8 @@ export default {
   name:"ele-stars",
   props:{
     size:String,
-    scrore:Number
+    scrore:Number,
+    mr:Number
   },
   computed: {
     scroreArr(){
@@ -20,17 +21,21 @@ export default {
         return ["off","off","off","off","off"]
       if(this.scrore>5)
         return ["on","on","on","on","on"]
-      let allStar = Math.floor(this.scrore/0.5)
-      let allNum = allStar/2
-      for(let i=1;i<allNum;i++){
-        arr.push("on")
+      let stars = Math.floor(this.scrore * 2)/2;
+      //满星的数量
+      let fullStars = Math.floor(stars);
+      //是否需要半星
+      let needHalf =  (stars % 1) === 0 ? false:true;
+
+      //构建评星数组
+      for(let i=0;i<fullStars;i++){
+          arr.push("on")
       }
-      let halfStar = this.scrore%1
-      if(halfStar>0.5)
-        arr.push("half")
-      while(arr.length<5)
-        arr.push("off")
-      return arr
+      needHalf?arr.push("half"):"";
+      while (arr.length < 5)
+          arr.push("off")
+
+      return arr;
     }
   },
 }

@@ -24,7 +24,7 @@
           <span class="cartText">购物车</span>
           <span class="clear" @click="clear">清空</span>
       </div>
-      <div class="content">
+      <div class="content" ref="contentList">
           <ul>
               <li class="item" v-for="(selectItem,index) in selectedFoods" :key="index">
                   <span class="left"> {{selectItem.name}} </span>
@@ -42,6 +42,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import BScorll from 'better-scroll'
 import contorl from '../ele-contorl/ele-contorl.vue'
 export default {
   name:"ele-cart",
@@ -61,6 +62,11 @@ export default {
       this.$emit("clear")
       this.showMask=false
     }
+  },
+  mounted(){
+    this.$nextTick(()=>{
+      new BScorll(this.$refs.contentList)
+    })
   },
   computed: {
     ...mapState(["seller"]),

@@ -13,6 +13,7 @@ import store from './store'
 //引入icon样式
 import "./common/stylus/style.styl"
 import "./common/stylus/minxin.styl"
+import './filters'
 
 Vue.prototype.$bus=new Vue()
 Vue.config.productionTip = false
