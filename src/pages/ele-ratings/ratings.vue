@@ -64,7 +64,6 @@
 import BScroll from 'better-scroll'
 import {mapState,mapActions} from 'vuex'
 import {GETRATINGS} from '../../store/mutation_types'
-import icon from '../../components/ele-icon/ele-icon.vue'
 import star from '../../components/ele-stars/ele-stars.vue'
 import select from '../../components/ele-select/ele-select.vue'
 export default {
