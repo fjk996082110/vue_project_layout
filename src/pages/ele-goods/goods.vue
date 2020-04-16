@@ -46,6 +46,7 @@ export default {
     "ele-cart":cart
   },
   computed: {
+    // 一个测试的注释
     ...mapState(["goods"]),
     currentIndex(){
       return this.changeCurrent()
@@ -137,6 +138,7 @@ export default {
     this.$bus.$on("remove",(food)=>{
       this.remove(food)
     })
+    console.log('test---')
   }
 }
 </script>
