@@ -98,7 +98,7 @@ export default {
       this.selectType = index
     },
     showOnlyText(){
-      this.onlyText = true
+      this.onlyText = !this.onlyText
     }
   },
   async mounted(){

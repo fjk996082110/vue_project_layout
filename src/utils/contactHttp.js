@@ -8,7 +8,7 @@ export default (axios,config)=>{
     throw new Error(`${modelName}中的api属性必须是一个对象`)
   let httpObj = {}
   for (const apiName in api) {
-    let {url,method,isForm,data:apiData,toast,hooks} = api[apiName]
+    let {url,method,isForm,data:apiData,toast,hooks,corsUrl} = api[apiName]
     apiData = apiData || {}
     hooks = hooks || {}
     const {beforeReq,afterReqSuccess,afterReqFail} = hooks
@@ -28,6 +28,10 @@ export default (axios,config)=>{
         transformData = Object.assign(apiData,data)
       }
       let result = ''
+      if(corsUrl){
+        url = corsUrl + url
+        corsUrl = ''
+      }
       //根据method发送请求
       try {
         beforeReq && beforeReq.call(config)

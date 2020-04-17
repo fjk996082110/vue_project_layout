@@ -14,9 +14,13 @@ import store from './store'
 import "./common/stylus/style.styl"
 import "./common/stylus/minxin.styl"
 import './filters'
+import split from './components/ele-split/ele-split.vue'
+import HeaderTop from './components/HeaderTop/HeaderTop.vue'
 
 Vue.prototype.$bus=new Vue()
 Vue.config.productionTip = false
+Vue.component("ele-split",split)
+Vue.component("header-top",HeaderTop)
 
 new Vue({
   router,

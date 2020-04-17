@@ -3,7 +3,7 @@
         <ul>
             <li v-for="(item,index) in supports" :key="index">
                 <ele-icon class="icon" size="2" :type="item.type"></ele-icon>
-                <span>{{item.content}}</span>
+                <span :style="{color}">{{item.content}}</span>
             </li>
         </ul>
     </div>
@@ -14,7 +14,8 @@ import icon from "../ele-icon/ele-icon"
     export default {
         name: "ele-list",
         props:{
-            supports:Array
+            supports:Array,
+            color:String
         },
         components:{
             "ele-icon":icon
