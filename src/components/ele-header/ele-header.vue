@@ -21,6 +21,9 @@
         <span>5个</span>
         <i class="layout-keyboard_arrow_right"></i>
       </div>
+      <div class="close" @click="$router.replace('/Msite')">
+        <i class="layout-close"></i>
+      </div>
     </div>
     <div class="headerBottom" @click="showMask=true">
       <div class="content">
@@ -155,6 +158,13 @@ export default {
       width 40px
       span 
         margin-right 4px
+    & > .close
+      width 20px
+      height 20px
+      border-radius 50%
+      font-size 20px
+      color rgba(255,255,255,.7)
+      background gray  
   & > .headerBottom
     center()
     height 28px

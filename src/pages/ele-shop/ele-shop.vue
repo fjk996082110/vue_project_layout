@@ -3,13 +3,13 @@
     <ele-header></ele-header>
     <div class="nav">
       <div class="item">
-        <router-link to="/goods">商品</router-link>
+        <router-link :to="`/shop/${id}/goods`">商品</router-link>
       </div>
       <div class="item">
-        <router-link to="/ratings">评价</router-link>
+        <router-link :to="`/shop/${id}/ratings`">评价</router-link>
       </div>
       <div class="item">
-        <router-link to="/seller">商家</router-link>
+        <router-link :to="`/shop/${id}/seller`">商家</router-link>
       </div>
     </div>
     <keep-alive>
@@ -24,6 +24,14 @@ import {mapActions} from 'vuex'
 import {GETSELLER} from '../../store/mutation_types'
 export default {
   name: 'App',
+  data() {
+    return {
+      id:this.id
+    }
+  },
+  porps:{
+    id:String
+  },
   components:{
     "ele-header":header
   },
@@ -37,7 +45,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import "./common/stylus/minxin.styl"
+@import "../../common/stylus/minxin.styl"
   .shop
     position relative
     width 100%

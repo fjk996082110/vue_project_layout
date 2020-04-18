@@ -66,28 +66,32 @@ export default {
   methods: {
     ...mapActions([GETGOODS]),
     initTops(){
-      this.$nextTick(()=>{
-        let goodList = this.$refs.goodList
-        let goods = goodList.children
-        let top = 0
-        let topArr = [top]
-        Array.from(goods).forEach((good)=>{
-          top += good.offsetHeight
-          topArr.push(top)
+      if(this.$refs.goodList){
+        this.$nextTick(()=>{
+          let goodList = this.$refs.goodList
+          let goods = goodList.children
+          let top = 0
+          let topArr = [top]
+          Array.from(goods).forEach((good)=>{
+            top += good.offsetHeight
+            topArr.push(top)
+          })
+          this.topsArr = topArr
         })
-        this.topsArr = topArr
-      })
+      }
     },
     initScrollY(){
       //初始化滑屏
-      this.$nextTick(()=>{
-        this.typeWrapBS = new BScroll(this.$refs.typeWrap)
-        this.goodWrapBS = new BScroll(this.$refs.goodWrap,{probeType:3})
-        this.goodWrapBS.on('scroll',({x,y})=>{
-          this.scrollX = Math.abs(x)
-          this.scrollY = Math.abs(y)
+      if(this.$refs.typeWrap&&this.$refs.goodWrap){
+        this.$nextTick(()=>{
+          this.typeWrapBS = new BScroll(this.$refs.typeWrap)
+          this.goodWrapBS = new BScroll(this.$refs.goodWrap,{probeType:3})
+          this.goodWrapBS.on('scroll',({x,y})=>{
+            this.scrollX = Math.abs(x)
+            this.scrollY = Math.abs(y)
+          })
         })
-      })
+      }
     },
     chooseType(index){
       let scrollY = this.topsArr[index]
@@ -132,13 +136,14 @@ export default {
     await this[GETGOODS]()
     this.initTops()
     this.initScrollY()
+    this.$bus.$off("add")
+    this.$bus.$off("remove")
     this.$bus.$on("add",(food)=>{
       this.add(food)
     })
     this.$bus.$on("remove",(food)=>{
       this.remove(food)
     })
-    console.log('test---')
   }
 }
 </script>

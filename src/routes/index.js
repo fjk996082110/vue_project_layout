@@ -1,6 +1,7 @@
-/* import goods from '../pages/ele-goods/goods.vue'
+import goods from '../pages/ele-goods/goods.vue'
 import ratings from '../pages/ele-ratings/ratings.vue'
-import seller from '../pages/ele-seller/seller.vue' */
+import seller from '../pages/ele-seller/seller.vue'
+import Shop from '../pages/ele-shop/ele-shop.vue'
 import Msite from '../pages/Msite/Msite.vue'
 import Order from '../pages/Order/Order.vue'
 import Profile from '../pages/Profile/Profile.vue'
@@ -12,5 +13,18 @@ export default [
   {path:'/Profile', component: Profile, meta:{showFooter:true}},
   {path:'/Search', component: Search, meta:{showFooter:true}},
   {path:'/Login', component: Login, meta:{showFooter:false}},
+  {
+    path:'/Shop/:id', 
+    component: Shop, 
+    meta:{showFooter:false},
+    props:true,
+    children:[
+      {path:'goods',component:goods},
+      {path:'ratings',component:ratings},
+      {path:'seller',component:seller},
+      {path:'',redirect:'goods'}
+    ]
+  },
+  
   {path:'/', redirect: '/Msite'},
 ]

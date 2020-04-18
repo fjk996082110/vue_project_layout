@@ -5,6 +5,20 @@ export default {
       url:'/position/40.10038,116.36867',
       method:'get',
       corsUrl:'/4000'
+    },
+    getCategory:{
+      url:'/index_category',
+      method:'get',
+      corsUrl:'/4000'
+    },
+    getShops:{
+      url:'/shops',
+      method:'get',
+      corsUrl:'/4000',
+      params:{
+        latitude:40.10038,
+        longitude:116.36867
+      }
     }
   }
 }
