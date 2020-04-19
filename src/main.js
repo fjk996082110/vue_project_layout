@@ -17,6 +17,7 @@ import './filters'
 import split from './components/ele-split/ele-split.vue'
 import HeaderTop from './components/HeaderTop/HeaderTop.vue'
 
+import './validate'
 
 Vue.prototype.$bus=new Vue()
 Vue.config.productionTip = false

@@ -1,9 +1,9 @@
 export default {
   name:'login',
   api:{
-    getLoginWithPwd:{
-      url:'/login_pwd',
-      method:'post',
+    getCode:{
+      url:'/sendcode',
+      method:'get',
       corsUrl:'/4000'
     },
   }

@@ -12,8 +12,12 @@
         <form>
           <div :class="{on:showLogin===0}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号" v-model="username">
-              <button disabled="disabled" class="get_verification" >获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phoneNumber" name="phone" v-validate="`required|phone`" />
+              <span style="color: red;" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
+              <button :disabled="!phoneNumberIsRight" class="get_verification" 
+               :class="{highLight:phoneNumberIsRight}" @click.prevent="getCode" ref="getCode">
+                {{times>0?`已发送${times}s`:`获取验证码`}}
+               </button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码" v-model="captcha">
@@ -26,22 +30,25 @@
           <div :class="{on:showLogin===1}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="username">
+                <input type="tel" maxlength="11" placeholder="用户名" v-model="username" name="name" v-validate="'required'" />
+                <span style="color: red;" v-show="errors.has('name')">{{ errors.first('name') }}</span>
               </section>
               <section class="login_verification">
-                <input :type="changeLook" maxlength="8" placeholder="密码" v-model="password" ref="passwordInput">
+                <input :type="lookPassword ? 'tel' : 'password'" maxlength="8" placeholder="密码" v-model="password" ref="passwordInput"
+                name="pwd" v-validate="'required'" />
+                <span style="color: red;" v-show="errors.has('pwd')">{{ errors.first('pwd') }}</span>
                 <div class="switch_button" :class="{on:lookPassword}" @click="lookPassword=!lookPassword">
                   <div class="switch_circle" :style="{left:lookPassword?'24px':'-1px'}"></div>
                   <span class="switch_text"></span>
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="changeCaptcha" ref="captcha">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha" name="captcha" v-validate="{required: true,regex: /^[0-9a-zA-Z]{4}$/}" />
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" ref="imgCaptcha" @click="getCaptcha">
               </section>
             </section>
           </div>
-          <button class="login_submit">登录</button>
+          <button class="login_submit" @click.prevent="login">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -53,26 +60,57 @@
 </template>
 
 <script>
+import {Toast} from 'vant'
   export default {
     name:"login",
     data() {
       return {
-        showLogin:1,
-        username:"",
-        password:"",
-        captcha:"",
-        lookPassword:false
+        showLogin:1,  //显示手机号登陆或密码登陆  1密码登陆 0手机号登陆
+        phoneNumber:"", //输入的手机号
+        username:"",  //输入的用户名
+        password:"",  //输入的密码
+        captcha:"", //输入的图片验证码
+        lookPassword:false, //是否显示密码
+        phoneReg:/^1\d{10}/igm, //手机验证
+        times:0 //验证码发送时间
       }
     },
     computed: {
-      changeLook(){
-        return this.lookPassword ? 'tel' : 'password'
+      phoneNumberIsRight(){
+        return this.phoneReg.test(this.phoneNumber)
       }
     },
     methods: {
-      changeCaptcha(){
-        console.log('获取验证码')
+      getCaptcha(){
+        this.$refs.imgCaptcha.src='http://localhost:4000/captcha?time='+Date.now()
       },
+      async getCode(){
+        this.times = 12;
+        this.$refs.getCode.disabled='disabled'
+        this.timer = setInterval(()=>{
+            if(this.times > 0)
+                this.times--
+            else
+                clearInterval(this.timer)
+        },1000)
+        //发送请求
+        const {code,msg} = await this.$http.login.getCode({
+          phone:this.phoneNumber
+        })
+        if(code===0) Toast.success('短信发送成功！')
+        if(code===1) Toast.fail('短信发送失败！',msg)
+      },
+      async login(){
+        if(this.showLogin===1){
+          const flag = await this.$validator.validateAll(["name","pwd","captcha"])
+          if(!flag) return
+          console.log('username')
+        }else if(this.showLogin===0){
+          const flag = await this.$validator.validateAll(["phone","code"])
+          if(!flag) return
+          console.log('message')
+        }
+      }
     },
   }
 </script>
@@ -138,6 +176,9 @@
                 color #ccc
                 font-size 14px
                 background transparent
+              .highLight
+                color green
+                font-weight 800
             .login_verification
               position relative
               margin-top 16px
