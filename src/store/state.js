@@ -5,5 +5,7 @@ export default {
   ratings:[],
   addressObj:{},
   categoryArr:[],
-  shops:[]
+  shops:[],
+  user:{},
+  token:""
 }

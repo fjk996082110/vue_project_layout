@@ -7,10 +7,18 @@
 
 <script>
 import FooterGuide from './components/FooterGuide/FooterGuide.vue'
+import {mapActions} from 'vuex'
+import {LOGINAUTO} from './store/mutation_types'
 export default {
   name: 'App',
   components:{
     FooterGuide
+  },
+  methods: {
+    ...mapActions([LOGINAUTO])
+  },
+  created(){
+    this[LOGINAUTO]()
   }
 }
 </script>

@@ -4,7 +4,7 @@
       <div class="login_header">
         <h2 class="login_logo">二八外卖</h2>
         <div class="login_header_title">
-          <a href="javascript:;" :class="{on:showLogin===0}" @click="showLogin=0">短信登录</a>
+          <a href="javascript:;" :class="{on:showLogin===0}" @click="showLogin=0">手机登录</a>
           <a href="javascript:;" :class="{on:showLogin===1}" @click="showLogin=1">密码登录</a>
         </div>
       </div>
@@ -20,7 +20,8 @@
                </button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码" v-model="captcha">
+              <input type="tel" maxlength="8" placeholder="验证码" v-model="code" name="code" v-validate="{required: true,regex: /^\d{6}$/}" />
+              <span style="color: red;" v-show="errors.has('code')">{{ errors.first('code') }}</span>
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -44,6 +45,7 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha" name="captcha" v-validate="{required: true,regex: /^[0-9a-zA-Z]{4}$/}" />
+                <span style="color: red;" v-show="errors.has('captcha')">{{ errors.first('captcha') }}</span>
                 <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" ref="imgCaptcha" @click="getCaptcha">
               </section>
             </section>
@@ -61,6 +63,8 @@
 
 <script>
 import {Toast} from 'vant'
+import {mapActions} from 'vuex'
+import {GETUSER} from '../../store/mutation_types'
   export default {
     name:"login",
     data() {
@@ -70,6 +74,7 @@ import {Toast} from 'vant'
         username:"",  //输入的用户名
         password:"",  //输入的密码
         captcha:"", //输入的图片验证码
+        code:"",//手机验证码
         lookPassword:false, //是否显示密码
         phoneReg:/^1\d{10}/igm, //手机验证
         times:0 //验证码发送时间
@@ -81,6 +86,7 @@ import {Toast} from 'vant'
       }
     },
     methods: {
+      ...mapActions([GETUSER]),
       getCaptcha(){
         this.$refs.imgCaptcha.src='http://localhost:4000/captcha?time='+Date.now()
       },
@@ -101,14 +107,27 @@ import {Toast} from 'vant'
         if(code===1) Toast.fail('短信发送失败！',msg)
       },
       async login(){
-        if(this.showLogin===1){
-          const flag = await this.$validator.validateAll(["name","pwd","captcha"])
-          if(!flag) return
-          console.log('username')
-        }else if(this.showLogin===0){
-          const flag = await this.$validator.validateAll(["phone","code"])
-          if(!flag) return
-          console.log('message')
+        if(this.showLogin === 0){
+            //手机号 + 短信验证码登录
+            const flag = await this.$validator.validateAll(["phone","code"])
+            if(!flag) return;
+            this[GETUSER]({
+                loginType:'message',
+                phone:this.phoneNumber,
+                code:this.code,
+                getCaptcha:this.getCaptcha
+            })
+        }else if(this.showLogin === 1){
+            //用户名 + 密码登录
+            const flag = await this.$validator.validateAll(["name","pwd","captcha"])
+            if(!flag) return;
+            this[GETUSER]({
+                loginType:'password',
+                name:this.username,
+                pwd:this.password,
+                captcha:this.captcha,
+                getCaptcha:this.getCaptcha
+            })
         }
       }
     },

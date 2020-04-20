@@ -1,4 +1,4 @@
-import {GETSELLER,GETGOODS,GETRATINGS,GETADDRESS,GETCATEGORY,GETSHOPS} from './mutation_types'
+import {GETSELLER,GETGOODS,GETRATINGS,GETADDRESS,GETCATEGORY,GETSHOPS,GETUSER,DELUSER,LOGINAUTO} from './mutation_types'
 export default {
     [GETSELLER](state,seller){
       state.seller=seller
@@ -17,5 +17,16 @@ export default {
     },
     [GETSHOPS](state,shops){
       state.shops=shops
+    },
+    [GETUSER](state,user){
+      state.user=user,
+      state.token=user.token
+    },
+    [DELUSER](state){
+      state.user={},
+      state.token=""
+    },
+    [LOGINAUTO](state,user){
+      state.user=user
     },
 }

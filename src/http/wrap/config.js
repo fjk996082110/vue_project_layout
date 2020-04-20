@@ -1,3 +1,4 @@
+import local from '../../utils/local'
 export default {
   name:'wrap',
   api:{
@@ -9,7 +10,10 @@ export default {
     getCategory:{
       url:'/index_category',
       method:'get',
-      corsUrl:'/4000'
+      corsUrl:'/4000',
+      token:()=>{
+        return local.get("ele-token")
+      }
     },
     getShops:{
       url:'/shops',
@@ -18,7 +22,20 @@ export default {
       params:{
         latitude:40.10038,
         longitude:116.36867
+      },
+      token:()=>{
+        return local.get("ele-token")
       }
-    }
+    },
+    loginByPwd:{
+      url:'/login_pwd',
+      method:'post',
+      corsUrl:'/4000'
+    },
+    loginBySms:{
+      url:'/login_sms',
+      method:'post',
+      corsUrl:'/4000'
+    },
   }
 }
