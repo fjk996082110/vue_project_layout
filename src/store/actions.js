@@ -89,22 +89,26 @@ export default {
           store.commit(LOGINAUTO,result.data)
       }else if(result.code === 1){
           //没有token
-          Toast.fail({
-              message:"请先登录",
-              duration:2000,
-              onClose(){
-                  router.replace("/Login")
-              }
-          })
+          // Toast.fail({
+          //     message:"请先登录",
+          //     duration:2000,
+          //     onClose(){
+          //         router.replace("/Login")
+          //     }
+          // })
+          await store.commit(DELUSER)
+          local.remove("ele-token")
       }
     } catch (error) {
-      Toast.fail({
-          message:error.msg,
-          duration:2000,
-          onClose(){
-              router.replace("/Login")
-          }
-      })
+      // Toast.fail({
+      //     message:error.msg,
+      //     duration:2000,
+      //     onClose(){
+      //         router.replace("/Login")
+      //     }
+      // })
+      await store.commit(DELUSER)
+      local.remove("ele-token")
     }
   },
 }
